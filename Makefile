@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2003-2010 Apple Inc.
+# Copyright (c) 2003-2012 Apple Inc.
 # Configure and build Apache mod_jk, the connector to Tomcat
 # Also installs workers.properties
 #
@@ -9,19 +9,21 @@
 include $(MAKEFILEPATH)/pb_makefiles/platform.make
 include $(MAKEFILEPATH)/pb_makefiles/commands-$(OS).make
 
-CONNECTORS_VERS=1.2.30
+-include /AppleInternal/ServerTools/ServerBuildVariables.xcconfig
+CONNECTORS_VERS=1.2.32
 CONNECTORS=tomcat-connectors-$(CONNECTORS_VERS)-src
 CONNECTORS_APACHE_DIR2=$(CONNECTORS)/native/apache-2.0
 CONNECTORS_JKNATIVE_DIR=$(CONNECTORS)/native
 VERSIONS_DIR=/usr/local/OpenSourceVersions
 LICENSE_DIR=/usr/local/OpenSourceLicenses
 MOD_JK=mod_jk.so
+export LTFLAGS = --tag=CC
 APXS2=/usr/sbin/apxs
 
 INSTALL=/usr/bin/install
 WORKERS=workers.properties
-LIBEXECDIR2=$(shell $(APXS2) -q LIBEXECDIR)
-SYSCONFDIR2=$(shell $(APXS2) -q SYSCONFDIR)
+LIBEXECDIR2=$(SERVER_INSTALL_PATH_PREFIX)/$(shell $(APXS2) -q LIBEXECDIR)
+SYSCONFDIR2=$(SERVER_INSTALL_PATH_PREFIX)/$(shell $(APXS2) -q SYSCONFDIR)
 
 build all default:: configure2 build2
 
